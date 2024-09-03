@@ -1,0 +1,162 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>{{company.name|title|cut:" "}}</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="{% static 'assets/img/favicon.png' %}" rel="icon">
+  <link href="{% static 'assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'assets/vendor/aos/aos.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/card_products.css' %}">
+
+<!--   <script src="https://code.jquery.com/jquery-3.7.1.js"
+    integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+    crossorigin="anonymous"></script> -->
+  
+  <script src="{% static 'lib/bootstrap-5.0.2/js/jquery.min.js' %}"></script>
+</head>
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top d-flex align-items-center">
+    <div class="container d-flex justify-content-between">
+      {% include 'header_catalog.html' %}
+    </div>
+  </header>
+  <!-- End Header -->
+
+  <main id="main">
+    <!-- ======= Services Section ======= -->
+    {% include 'menus.html' %}
+    <!-- End Services Section -->
+    <!-- ======= Team Section ======= -->
+    <section id="team" class="team" style="margin-top: 80px;" >
+      <div class="container-fluid productos_por_categorias" data-aos="fade-up">
+        {% block card_productos %}
+          {% include 'catalog/card_productos.html' %}
+        {% endblock card_productos %}
+
+        <hr>
+          {% include 'pag_productos.html' %}
+      </div> 
+    </section>
+
+    <!-- <section id="category" class="category">
+      <div class="container">
+        {% include 'catalog/card_category.html' %}
+      </div>
+    </section> -->
+    <!-- End Team Section -->
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content" id="optenerProducto">
+            
+        </div>
+      </div>
+    </div>
+
+    <!-- ======= Contact Section ======= -->
+    <section id="contact" class="contact">
+      <div class="container">
+        {% include 'contact.html' %}
+      </div>
+    </section>
+    <!-- End Contact Section -->
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+      {% include 'footer_catalog.html' %}
+  <!-- End Footer -->
+  <a href="https://api.whatsapp.com/send?text=Hola quiero más información sobre sus productos, gracias.%0A{{request.build_absolute_uri}} &phone={{company.mobile}}" target="_blank" class="back-to-top-w d-flex align-items-center justify-content-center"><i class="bi bi-whatsapp"></i></a>
+  <div class="alert alert-danger container tamanio" role="alert" style="display: none;"></div>
+  <div class="alert alert-success container tamanio" role="alert" style="display: none;"></div>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <!-- Vendor JS Files -->
+  <script src="{% static 'assets/vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/glightbox/js/glightbox.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/php-email-form/validate.js' %}"></script>
+
+  <!-- Template Main JS File -->
+  <script src="{% static 'assets/js/main.js' %}"></script>
+  
+  {% block scritp_js %}
+    
+  {% endblock scritp_js %}
+  
+</body>
+<script>
+  $('.multiple-card-slider .carousel').each(function(){
+    var currentCarouselId = '#' + $(this).attr('id');
+    const multipleItemCarousel = document.querySelector(currentCarouselId);
+
+    if(window.matchMedia("(min-width:576px)").matches){
+        const carousel = new bootstrap.Carousel(multipleItemCarousel, {
+            interval: false,
+            wrap: false
+        })
+        var carouselWidth = $(currentCarouselId + ' .carousel-inner')[0].scrollWidth;
+        var cardWidth = $(currentCarouselId + ' .carousel-item').width();
+        var scrollPosition = 0;    
+        $(currentCarouselId + ' .carousel-control-next').on('click', function(){
+            if(scrollPosition < (carouselWidth - (cardWidth * 4))){
+                console.log('next');
+                scrollPosition = scrollPosition + cardWidth;
+                $(currentCarouselId + ' .carousel-inner').animate({scrollLeft: scrollPosition},600);
+            }
+        });
+        $(currentCarouselId + ' .carousel-control-prev').on('click', function(){
+            if(scrollPosition > 0){
+                console.log('prev');
+                scrollPosition = scrollPosition - cardWidth;
+                $(currentCarouselId + ' .carousel-inner').animate({scrollLeft: scrollPosition},600);
+            }
+        });
+    }else{
+        $(multipleItemCarousel).addClass('slide');
+    }
+});
+$(function(){
+  $('.carousel-item:first-child').addClass('active');
+});
+
+function mostrar_por_categoria(id_categoria){
+      //alert("id: " + id_categoria);
+      /* if(screen.width > 200 && screen.width < 992){
+        $("#navbar .mobile-nav-toggle").click();
+      } */
+      $.ajax({
+          type: 'GET',
+          url: '/'+id_categoria+'/mostrar_por_categoria',
+          data:{'id_categoria':id_categoria},
+          success:function(resp){
+              $(".productos_por_categorias").fadeIn(1000).html(resp);
+              $(".navbar-mobile i").click();
+          }
+      });
+  }
+</script>
+</html>
